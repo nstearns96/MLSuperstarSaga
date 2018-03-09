@@ -1,8 +1,108 @@
-entry:
-  b start
+ENTRY:
+  B START
 
-start:
-  mov r0, #18 
-  msr CPSR_fc, r0 ;Disable IRQ
-  ldr sp, [pc, #44] 
-  mov r0, #31
+START:
+	MOV	R0, #0x12
+	MSR	CPSR_FC, R0
+	LDR	SP, [PC, #0x2C]
+	MOV	R0, #0x1F
+	MSR	CPSR_FC, R0
+	LDR	SP, [PC, #0x1C]
+	LDR	R1, [PC, #0x24]
+	ADD	R0, PC, #0x28
+	STR	R0, [R1]
+	LDR	R1, [PC, #0x1C]
+	MOV	LR, PC
+	BX	R1
+	B	#0x192
+	MOVWEQ	R7, #0xA00
+	MOVWEQ	R7, #0xD00
+	MOVWEQ	R7, #0xFA0
+	SUB	SB, R5, #0xA30
+	MOVWEQ	R7, #0xFFC
+	STMDAEQ	R1, {R0, SB, FP, IP, SP, LR}
+	LDR	R3, [PC, #0x258]
+	LDR	R3, [R3]
+	CMP	R3, #0
+	BNE	#0x32E
+	MOV	R3, #0x4000000
+	ADD	R3, R3, #0x200
+	LDR	R2, [R3]
+	AND	R1, R2, R2, LSR #16
+	MOV	IP, #0
+	ANDS	R0, R1, #0x40
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x80
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #1
+	BNE	#0x29A
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #4
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #2
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x100
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x200
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x400
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x800
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x1000
+	BNE	#0x286
+	ADD	IP, IP, #4
+	ANDS	R0, R1, #0x2000
+	STRBNE	R0, [R3, #-0x17C]
+	BNE	#0x282
+	STRH	R0, [R3, #2]
+	LDR	R1, [PC, #0x1B0]
+	ADD	R1, R1, IP
+	LDR	R0, [R1]
+	BX	R0
+	STRH	R0, [R3, #2]
+	LDR	R1, [PC, #0x1A0]
+	ADD	R1, R1, IP
+	LDR	R0, [R1]
+	LDR	R3, [PC, #0x198]
+	LDRB	IP, [R3]
+	CMP	IP, #0
+	BEQ	#0x32A
+	MOV	R2, #0
+	STRB	R2, [R3]
+	LDR	R3, [PC, #0x184]
+	STRH	R2, [R3]
+	MRS	R3, APSR
+	BIC	R3, R3, #0xDF
+	ORR	R3, R3, #0x1F
+	MSR	CPSR_FC, R3
+	LDR	R3, [PC, #0x170]
+	STR	SP, [R3]
+	LDR	R3, [PC, #0x16C]
+	LDR	SP, [R3]
+	MRS	R3, APSR
+	BIC	R3, R3, #0xDF
+	ORR	R3, R3, #0x92
+	MSR	CPSR_FC, R3
+	LDR	R3, [PC, #0x14C]
+	MOV	R2, #1
+	STRH	R2, [R3]
+	LDR	R3, [SP, #0x14]
+	SUB	R3, R3, #4
+	LDR	IP, [PC, #0x144]
+	STR	R3, [IP]
+	LDR	R3, [PC, #0x140]
+	STR	R3, [SP, #0x14]
+	LDR	R3, [PC, #0x13C]
+	MOV	IP, #1
+	STRB	IP, [R3]
+	BX	R0
+	MOV	R3, #0x4000000
